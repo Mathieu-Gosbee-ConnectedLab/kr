@@ -209,6 +209,8 @@ func pairOver(unixFile string, forceUnpair bool, name *string, stdout io.ReadWri
 	}
 	stdout.Write([]byte(authorizedKey))
 	stdout.Write([]byte("\r\n"))
+
+	krdclient.RequestMe()
 	return
 }
 
@@ -518,7 +520,7 @@ func restartCommand(c *cli.Context) (err error) {
 func main() {
 	app := cli.NewApp()
 	app.Name = "kr"
-	app.Usage = "communicate with Krypton and krd - the Krypton daemon"
+	app.Usage = "MATSBUILDcommunicate with Krypton and krd - the Krypton daemon"
 	app.Version = kr.CURRENT_VERSION.String()
 	app.Flags = []cli.Flag{}
 	app.Commands = []cli.Command{

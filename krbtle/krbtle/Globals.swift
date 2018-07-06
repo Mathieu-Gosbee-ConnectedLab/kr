@@ -10,7 +10,7 @@ import Foundation
 
 //MARK: Keys
 let KR_ENDPOINT_ARN_KEY = "aws_endpoint_arn_key"
-let APP_GROUP_SECURITY_ID = "group.co.krypt.kryptonite"
+let APP_GROUP_SECURITY_ID = "group.com.matbee.krypton"
 
 //MARK: Platform Detection
 struct Platform {

@@ -3,11 +3,15 @@ package krdclient
 import (
 	"bufio"
 	"bytes"
+	"strings"
 	"encoding/json"
 	"fmt"
+	"log"
 	"io/ioutil"
 	"net"
 	"net/http"
+	"os"
+	"os/exec"
 
 	"github.com/blang/semver"
 	"github.com/kryptco/kr"
@@ -140,6 +144,19 @@ func RequestMeOver(conn net.Conn) (me kr.Profile, err error) {
 	return
 }
 
+func SaveGitConfig(name string, email string) {
+	oldPath := os.Getenv("PATH")
+	if !strings.Contains(oldPath, "/usr/local/bin") || !strings.Contains(oldPath, "/usr/bin") {
+		os.Setenv("PATH", "/usr/bin:/usr/local/bin:"+oldPath)
+	}
+	fmt.Println("Updating git config")
+	log.Printf("git config --global --replace-all user.name %s\n", name)
+	log.Printf("git config --global --replace-all user.email %s\n", email)
+	exec.Command("git", "config", "--global", "--replace-all", "user.name", name).Run()
+	exec.Command("git", "config", "--global", "--replace-all", "user.email", email).Run()
+	return
+}
+
 func RequestMe() (me kr.Profile, err error) {
 	unixFile, err := kr.KrDirFile(kr.DAEMON_SOCKET_FILENAME)
 	if err != nil {
@@ -153,6 +170,8 @@ func RequestMe() (me kr.Profile, err error) {
 	}
 	defer daemonConn.Close()
 	me, err = RequestMeOver(daemonConn)
+
+	SaveGitConfig(me.FullName, me.Email)
 	return
 }
 

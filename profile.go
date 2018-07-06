@@ -17,6 +17,7 @@ import (
 type Profile struct {
 	SSHWirePublicKey []byte          `json:"public_key_wire"`
 	Email            string          `json:"email"`
+	FullName		 string 		 `json:"full_name,omitempty"`
 	PGPPublicKey     *[]byte         `json:"pgp_pk,omitempty"`
 	TeamCheckpoint   *TeamCheckpoint `json:"team_checkpoint,omitempty"`
 }
